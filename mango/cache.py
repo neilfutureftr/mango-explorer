@@ -25,7 +25,7 @@ from .context import Context
 from .layouts import layouts
 from .metadata import Metadata
 from .version import Version
-
+import sys
 
 # # 🥭 NodeBank class
 #
@@ -78,8 +78,13 @@ class PerpMarketCache:
 
     @staticmethod
     def from_layout(layout: typing.Any) -> typing.Optional["PerpMarketCache"]:
-        if str(layout.last_update)=="1970-01-01 01:00:00":
-            return None
+        if sys.platform == 'win32':
+            if str(layout.last_update)=="1970-01-01 01:00:00":
+                return None
+        else:
+            if layout.last_update.timestamp()==0:
+                return None
+
         return PerpMarketCache(layout.long_funding, layout.short_funding, layout.last_update)
 
     def __str__(self) -> str:

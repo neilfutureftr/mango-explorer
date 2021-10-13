@@ -15,7 +15,7 @@
 
 import rx
 import typing
-
+import sys
 from pathlib import Path
 
 
@@ -26,8 +26,12 @@ from pathlib import Path
 # the health of the system.
 #
 class HealthCheck(rx.core.typing.Disposable):
-    def __init__(self, healthcheck_files_location: str = r"C:\Users\neilast\Documents\mango-explorer-main\tmp"):
-        self.healthcheck_files_location: str = healthcheck_files_location
+    def __init__(self):
+        if sys.platform == 'win32':
+            self.healthcheck_files_location: str = r"C:\Users\neilast\Documents\mango-explorer-main\tmp"
+        else:
+            self.healthcheck_files_location: str = "/var/tmp"
+
         self._to_dispose: typing.List[rx.core.typing.Disposable] = []
 
     def add(self, name: str, observable: rx.core.Observable):

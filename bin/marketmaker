@@ -14,6 +14,7 @@ from solana.publickey import PublicKey
 
 sys.path.insert(0, os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..")))
+
 import mango  # nopep8
 import mango.hedging  # nopep8
 import mango.marketmaking  # nopep8
@@ -25,7 +26,7 @@ mango.ContextBuilder.add_command_line_parameters(parser)
 mango.Wallet.add_command_line_parameters(parser)
 chainbuilder.ChainBuilder.add_command_line_parameters(parser)
 parser.add_argument("--market", type=str, required=True, help="market symbol to make market upon (e.g. ETH/USDC)")
-parser.add_argument("--update-mode", type=mango.marketmaking.ModelUpdateMode, default=mango.marketmaking.ModelUpdateMode.POLL,
+parser.add_argument("--update-mode", type=mango.marketmaking.ModelUpdateMode, default=mango.marketmaking.ModelUpdateMode.WEBSOCKET,
                     choices=list(mango.marketmaking.ModelUpdateMode), help="Update mode for model data - can be POLL (default) or WEBSOCKET")
 parser.add_argument("--oracle-provider", type=str, required=True, help="name of the price provider to use (e.g. pyth)")
 parser.add_argument("--oracle-market", type=str,
@@ -83,7 +84,7 @@ disposer.add_disposable(manager)
 health_check = mango.HealthCheck()
 disposer.add_disposable(health_check)
 
-wallet = mango.Wallet.from_command_line_parameters_or_raise(args)
+wallet = mango.Wallet.load()
 group = mango.Group.load(context, context.group_address)
 account = mango.Account.load_for_owner_by_address(context, wallet.address, group, args.account_address)
 
@@ -153,13 +154,15 @@ manager.open()
 
 
 def pulse_action(_) -> None:
-    model_state: mango.ModelState = model_state_builder.build(context)
-    market_maker.pulse(context, model_state)
-    hedger.pulse(context, model_state)
+    if True:
+        model_state: mango.ModelState = model_state_builder.build(context)
+        market_maker.pulse(context, model_state)
+        hedger.pulse(context, model_state)
 
 
+trd_pool_s=context.create_thread_pool_scheduler()
 pulse_disposable = rx.interval(args.pulse_interval).pipe(
-    rx.operators.observe_on(context.create_thread_pool_scheduler()),
+    rx.operators.observe_on(trd_pool_s),
     rx.operators.start_with(-1),
     rx.operators.catch(mango.observable_pipeline_error_reporter),
     rx.operators.retry()

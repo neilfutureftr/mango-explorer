@@ -26,7 +26,7 @@ from pathlib import Path
 # the health of the system.
 #
 class HealthCheck(rx.core.typing.Disposable):
-    def __init__(self, healthcheck_files_location: str = "/var/tmp"):
+    def __init__(self, healthcheck_files_location: str = r"C:\Users\neilast\Documents\mango-explorer-main\tmp"):
         self.healthcheck_files_location: str = healthcheck_files_location
         self._to_dispose: typing.List[rx.core.typing.Disposable] = []
 

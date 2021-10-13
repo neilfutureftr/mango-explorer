@@ -1,3 +1,16 @@
+This is a slighly modified version of the mango explorer.
+Its working on windows 10 with python 3.10.
+To get started :
+1) Download and extract files somewhere lets say in C:\your\extract\path\mango-explorer-main
+2) Create an id.json file with your private key like [23,123 ... ] and save it in the C:\your\extract\path\mango-explorer-main\bin\
+3) Open the healthcheck.py script that is in C:\your\extract\path\mango-explorer-main\mango\ and change the path at line 29 from "C:\Users\neil\Documents\mango-explorer-main\tmp" to "C:\your\extract\path\mango-explorer-main\tmp"
+4) Open a console, write : 
+		cd C:\your\extract\path\mango-explorer-main\bin\
+		python marketmaker --name "BTC-PERP Marketmaker" --market BTC-PERP --oracle-provider pyth --confidenceinterval-position-size-ratio 0.1 --minimumcharge-ratio 0 --confidenceinterval-level 2 --confidenceinterval-level 4 --existing-order-tolerance 0.0001 --pulse-interval 30 --order-type POST_ONLY --biasquoteonposition-bias 0.00003 --log-level DEBUG --cluster-name devnet --dry-run
+5) delete --cluster-name devnet from the previous command to apply on mainnet
+
+Improvments to do : auto detect OS, this need to be portable for linux, this version is not
+
 # 🥭 Mango Explorer
 
 ## ⚠ Warning

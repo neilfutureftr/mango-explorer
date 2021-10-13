@@ -45,8 +45,10 @@ def model_state_builder_factory(mode: ModelUpdateMode, context: mango.Context, d
                                 wallet: mango.Wallet, group: mango.Group, account: mango.Account,
                                 market: mango.Market, oracle: mango.Oracle) -> ModelStateBuilder:
     if mode == ModelUpdateMode.WEBSOCKET:
+        print("WEBSOCKET")
         return _websocket_model_state_builder_factory(context, disposer, websocket_manager, health_check, wallet, group, account, market, oracle)
     else:
+        print("NOT WEBSOCKET")
         return _polling_model_state_builder_factory(context, wallet, group, account, market, oracle)
 
 

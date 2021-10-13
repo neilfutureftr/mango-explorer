@@ -40,7 +40,7 @@ class PriceCache:
 
     @staticmethod
     def from_layout(layout: typing.Any) -> typing.Optional["PriceCache"]:
-        if layout.last_update.timestamp() == 0:
+        if str(layout.last_update)=="1970-01-01 01:00:00":
             return None
         return PriceCache(layout.price, layout.last_update)
 
@@ -59,7 +59,7 @@ class RootBankCache:
 
     @staticmethod
     def from_layout(layout: typing.Any) -> typing.Optional["RootBankCache"]:
-        if layout.last_update.timestamp() == 0:
+        if str(layout.last_update)=="1970-01-01 01:00:00":
             return None
         return RootBankCache(layout.deposit_index, layout.borrow_index, layout.last_update)
 
@@ -78,7 +78,7 @@ class PerpMarketCache:
 
     @staticmethod
     def from_layout(layout: typing.Any) -> typing.Optional["PerpMarketCache"]:
-        if layout.last_update.timestamp() == 0:
+        if str(layout.last_update)=="1970-01-01 01:00:00":
             return None
         return PerpMarketCache(layout.long_funding, layout.short_funding, layout.last_update)
 
